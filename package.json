@@ -1,0 +1,11 @@
+{
+  "name": "notes-app-root",
+  "version": "1.0.0",
+  "description": "Full-stack MERN Notes App workspace",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "start:backend": "npm --prefix backend start",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build"
+  }
+}
