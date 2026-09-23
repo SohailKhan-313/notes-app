@@ -6,8 +6,7 @@
 **/build/
 
 # Environment files
-**/.env
-!**/.env.example
+**/.env*
 
 # OS and IDE files
 .DS_Store
