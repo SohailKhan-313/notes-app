@@ -21,9 +21,23 @@ const RegisterPage = () => {
     clearAuthError();
   }, [isAuthenticated, navigate]);
 
+  const clearErrors = () => {
+    if (validationError) setValidationError('');
+    if (authErrorMessage) clearAuthError();
+  };
+
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setValidationError('');
+    clearAuthError();
+
+    const trimmedName = fullName.trim();
+    const trimmedEmail = emailAddress.trim();
+
+    if (!trimmedName) {
+      setValidationError('Please enter your full name.');
+      return;
+    }
 
     if (passwordInput.length < 6) {
       setValidationError('Password must be at least 6 characters long.');
@@ -36,7 +50,7 @@ const RegisterPage = () => {
     }
 
     setIsSubmittingRegister(true);
-    const result = await register(fullName, emailAddress, passwordInput);
+    const result = await register(trimmedName, trimmedEmail, passwordInput);
     setIsSubmittingRegister(false);
 
     if (result.success) {
@@ -78,7 +92,10 @@ const RegisterPage = () => {
                 style={{ paddingLeft: '2.5rem' }}
                 placeholder="Jane Doe"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e) => {
+                  setFullName(e.target.value);
+                  clearErrors();
+                }}
                 required
                 autoFocus
               />
@@ -98,7 +115,10 @@ const RegisterPage = () => {
                 style={{ paddingLeft: '2.5rem' }}
                 placeholder="name@example.com"
                 value={emailAddress}
-                onChange={(e) => setEmailAddress(e.target.value)}
+                onChange={(e) => {
+                  setEmailAddress(e.target.value);
+                  clearErrors();
+                }}
                 required
               />
             </div>
@@ -117,7 +137,10 @@ const RegisterPage = () => {
                 style={{ paddingLeft: '2.5rem' }}
                 placeholder="Minimum 6 characters"
                 value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
+                onChange={(e) => {
+                  setPasswordInput(e.target.value);
+                  clearErrors();
+                }}
                 required
                 minLength={6}
               />
@@ -137,7 +160,10 @@ const RegisterPage = () => {
                 style={{ paddingLeft: '2.5rem' }}
                 placeholder="Repeat your password"
                 value={confirmPasswordInput}
-                onChange={(e) => setConfirmPasswordInput(e.target.value)}
+                onChange={(e) => {
+                  setConfirmPasswordInput(e.target.value);
+                  clearErrors();
+                }}
                 required
               />
             </div>

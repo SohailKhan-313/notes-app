@@ -1,11 +1,10 @@
 {
-  "name": "notes-app-root",
+  "name": "notes-app-client",
   "version": "1.0.0",
-  "description": "Full-stack MERN Notes App workspace",
+  "description": "Frontend client for NoteNest notes application",
   "scripts": {
-    "dev:backend": "npm --prefix backend run dev",
-    "start:backend": "npm --prefix backend start",
-    "dev:frontend": "npm --prefix frontend run dev",
-    "build:frontend": "npm --prefix frontend run build"
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview"
   }
 }

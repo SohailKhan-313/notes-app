@@ -40,15 +40,25 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setAuthErrorMessage(null);
     try {
-      const response = await axiosClient.post('/auth/login', { email, password });
+      const response = await axiosClient.post('/auth/login', {
+        email: email.trim(),
+        password,
+      });
       const { token, user } = response.data;
       localStorage.setItem('notes_auth_token', token);
       setAuthToken(token);
       setCurrentUser(user);
       return { success: true };
     } catch (error) {
-      const message =
-        error.response?.data?.message || 'Login failed. Please verify your credentials.';
+      console.error('Login error:', error);
+      let message;
+      if (!error.response) {
+        message = 'Cannot connect to backend API. Please verify backend server is running and VITE_API_URL is set.';
+      } else if (typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE')) {
+        message = 'Backend URL returned HTML instead of API response. Please check your VITE_API_URL setting.';
+      } else {
+        message = error.response.data?.message || 'Login failed. Please verify your credentials.';
+      }
       setAuthErrorMessage(message);
       return { success: false, message };
     }
@@ -58,15 +68,26 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     setAuthErrorMessage(null);
     try {
-      const response = await axiosClient.post('/auth/register', { name, email, password });
+      const response = await axiosClient.post('/auth/register', {
+        name: name.trim(),
+        email: email.trim(),
+        password,
+      });
       const { token, user } = response.data;
       localStorage.setItem('notes_auth_token', token);
       setAuthToken(token);
       setCurrentUser(user);
       return { success: true };
     } catch (error) {
-      const message =
-        error.response?.data?.message || 'Registration failed. Please check your information.';
+      console.error('Registration error:', error);
+      let message;
+      if (!error.response) {
+        message = 'Cannot connect to backend API. Please verify your Vercel backend is online and VITE_API_URL is configured.';
+      } else if (typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE')) {
+        message = 'Backend URL returned HTML instead of API response. Please set VITE_API_URL in Netlify settings.';
+      } else {
+        message = error.response.data?.message || 'Registration failed. Please check your information.';
+      }
       setAuthErrorMessage(message);
       return { success: false, message };
     }
