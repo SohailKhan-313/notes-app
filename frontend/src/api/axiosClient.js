@@ -1,8 +1,15 @@
 import axios from 'axios';
 
+// Determine backend URL
+const apiBaseUrl =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
+
+console.log('🔗 [NoteNest API] Configured baseURL:', apiBaseUrl);
+
 // Create configured Axios instance
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api'),
+  baseURL: apiBaseUrl,
   headers: {
     'Content-Type': 'application/json',
   },

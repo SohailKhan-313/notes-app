@@ -52,10 +52,11 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Login error:', error);
       let message;
+      const targetUrl = axiosClient.defaults.baseURL;
       if (!error.response) {
-        message = 'Cannot connect to backend API. Please verify backend server is running and VITE_API_URL is set.';
+        message = `Cannot connect to backend API at "${targetUrl}". Please verify this URL is online, reachable, and CORS is allowed.`;
       } else if (typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE')) {
-        message = 'Backend URL returned HTML instead of API response. Please check your VITE_API_URL setting.';
+        message = `Backend URL "${targetUrl}" returned HTML instead of JSON. Please verify your VITE_API_URL setting.`;
       } else {
         message = error.response.data?.message || 'Login failed. Please verify your credentials.';
       }
@@ -81,10 +82,11 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Registration error:', error);
       let message;
+      const targetUrl = axiosClient.defaults.baseURL;
       if (!error.response) {
-        message = 'Cannot connect to backend API. Please verify your Vercel backend is online and VITE_API_URL is configured.';
+        message = `Cannot connect to backend API at "${targetUrl}". Please verify this URL is online, reachable, and CORS is allowed.`;
       } else if (typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE')) {
-        message = 'Backend URL returned HTML instead of API response. Please set VITE_API_URL in Netlify settings.';
+        message = `Backend URL "${targetUrl}" returned HTML instead of JSON. Please verify your VITE_API_URL setting.`;
       } else {
         message = error.response.data?.message || 'Registration failed. Please check your information.';
       }
