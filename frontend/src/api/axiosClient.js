@@ -1,9 +1,23 @@
 import axios from 'axios';
 
+// Helper to sanitize and normalize backend URL
+function normalizeApiUrl(raw) {
+  if (!raw) return raw;
+  try {
+    const url = new URL(raw.trim());
+    const cleanPath = url.pathname.replace(/\/+/g, '/').replace(/\/$/, '');
+    return url.origin + cleanPath;
+  } catch {
+    return raw.trim().replace(/\/+$/, '');
+  }
+}
+
 // Determine backend URL
-const apiBaseUrl =
+const rawBaseUrl =
   import.meta.env.VITE_API_URL ||
   (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
+
+const apiBaseUrl = normalizeApiUrl(rawBaseUrl);
 
 console.log('🔗 [NoteNest API] Configured baseURL:', apiBaseUrl);
 
